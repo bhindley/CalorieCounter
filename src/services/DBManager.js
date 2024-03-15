@@ -38,7 +38,9 @@ export const setupTables = () => {
 			tx.executeSql(
 				sqlTableOne,
 				[],
-				() => {},
+				(tx, result) => {
+					console.log(result);
+				},
 				(tx, error) => {
 					reject(error);
 				},
@@ -46,7 +48,9 @@ export const setupTables = () => {
 			tx.executeSql(
 				sqlTableTwo,
 				[],
-				() => {},
+				(tx, result) => {
+					console.log(result);
+				},
 				(tx, error) => {
 					reject(error);
 				},
@@ -64,7 +68,9 @@ export const setupTables = () => {
 			tx.executeSql(
 				sqlTableFour,
 				[],
-				() => {},
+				(tx, result) => {
+					console.log(result);
+				},
 				(tx, error) => {
 					reject(error);
 				},
@@ -144,3 +150,25 @@ export const insertWorkout = (description, date, length) => {
 		});
 	});
 };
+
+export const selectUserData = () => {}
+
+export const selectIntake = () => {}
+
+export const selectFoodById = (id) => {
+	const sql = `SELECT * FROM food WHERE foodId = ?`;
+	return new Promise((resolve, reject) => {
+		db.transaction(tx => {
+			tx.executeSql(
+				sql,
+				[id],
+				(tx, result) => {
+					resolve(result);
+				},
+				(tx, error) => {
+					reject(error);
+				},
+			);
+		});
+	});
+}
