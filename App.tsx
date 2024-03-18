@@ -5,8 +5,8 @@
  * @format
  */
 
-import React, {useEffect} from "react";
-import * as db from "./src/services/DBManager.js";
+import React, {useCallback, useEffect} from "react";
+import * as dbm from "./src/services/DBManager.ts";
 import {
 	SafeAreaView,
 	ScrollView,
@@ -28,18 +28,21 @@ import {
 import ListItem_CommonFoods from "./src/components/ListItem_CommonFoods";
 
 function App(): React.JSX.Element {
-	const isDarkMode = useColorScheme() === "dark";
-
-	const backgroundStyle = {
-		backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-	};
-
-	useEffect(() => {
-		db.setupTables();
+	const loadData = useCallback(async () => {
+		try {
+			const db = await dbm.connectToDatabase();
+			await dbm.createTables(db);
+		} catch (error) {
+			console.error(error);
+		}
 	}, []);
 
+	useEffect(() => {
+		loadData();
+	}, [loadData]);
+
 	return (
-		<SafeAreaView style={backgroundStyle}>
+		<SafeAreaView>
 			<ListItem_CommonFoods foodId={1} />
 		</SafeAreaView>
 	);

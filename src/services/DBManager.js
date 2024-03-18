@@ -151,11 +151,11 @@ export const insertWorkout = (description, date, length) => {
 	});
 };
 
-export const selectUserData = () => {}
+export const selectUserData = () => {};
 
-export const selectIntake = () => {}
+export const selectIntake = () => {};
 
-export const selectFoodById = (id) => {
+export const selectFoodById = id => {
 	const sql = `SELECT * FROM food WHERE foodId = ?`;
 	return new Promise((resolve, reject) => {
 		db.transaction(tx => {
@@ -171,4 +171,4 @@ export const selectFoodById = (id) => {
 			);
 		});
 	});
-}
+};
