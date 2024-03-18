@@ -5,7 +5,7 @@
  * @format
  */
 
-import React, { useEffect } from "react";
+import React, {useEffect} from "react";
 import * as db from "./src/services/DBManager.js";
 import {
 	SafeAreaView,
