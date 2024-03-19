@@ -72,4 +72,26 @@ export const addFood = async (db: SQLiteDatabase, food: Food) => {
 		food.saturates,
 		food.isVisible ? 1 : 0,
 	];
+	try{
+		await db.executeSql(query, vals);
+	} catch (error) {
+		console.log(error);
+		throw Error("Could not insert food into table");
+	}
+};
+
+export const addWorkout = async (db: SQLiteDatabase, workout: Workout) => {
+	const query = `INSERT INTO workouts (description, caloriesBurned, date, length)`;
+	const vals = [
+		workout.description,
+		workout.caloriesBurned,
+		workout.date.day + "-" + workout.date.month + "-" + workout.date.year,
+		workout.length,
+	];
+	try{
+		await db.executeSql(query, vals);
+	} catch (error) {
+		console.log(error);
+		throw Error("Could not insert food into table");
+	}
 };

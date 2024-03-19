@@ -1,4 +1,11 @@
+declare interface date {
+    day: number;
+    month: number;
+    year: number;
+}
+
 declare interface Food {
+    id?: number; //optional
 	name: string;
 	calories: number;
 	protein: number;
@@ -10,10 +17,11 @@ declare interface Food {
 }
 
 declare interface Workout {
+    id?: number; //optional
     description: string;
     caloriesBurned: number;
-    date: string;
-    duration: number;
+    date: date;
+    length: number; //to be measured in seconds
 }
 
 declare interface User {
