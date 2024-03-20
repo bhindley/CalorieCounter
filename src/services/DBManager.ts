@@ -1,4 +1,4 @@
-import {SQLiteDatabase, enablePromise, openDatabase} from "react-native-sqlite-storage";
+import {ResultSet, SQLiteDatabase, enablePromise, openDatabase} from "react-native-sqlite-storage";
 
 // Enable promise for SQLite
 enablePromise(true);
@@ -15,7 +15,7 @@ export const connectToDatabase = async () => {
 };
 
 export const createTables = async (db: SQLiteDatabase) => {
-	const userDataQuery = `CREATE TABLE IF NOT EXISTS userData (name PRIMARY KEY NOT NULL TEXT, age INTEGER, weight REAL, goal REAL, weekly REAL)`;
+	const userDataQuery = `CREATE TABLE IF NOT EXISTS userData (name PRIMARY KEY NOT NULL TEXT, age INTEGER, sex INTEGER, weight REAL, height REAL, goal REAL, daily INTEGER, howActive INTEGER, end TEXT)`;
 	const intakeQuery = `CREATE TABLE IF NOT EXISTS intake (intakeId INTEGER PRIMARY KEY AUTOINCREMENT, foodId INTEGER, date TEXT)`;
 	const nutritionalQuery = `CREATE TABLE IF NOT EXISTS nutritional (foodId INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, calories INTEGER, protein REAL, carbs REAL, sugars REAL, fats REAL, saturates REAL, isVisible NUMBER)`;
 	const workoutsQuery = `CREATE TABLE IF NOT EXISTS workouts (workoutId INTEGER PRIMARY KEY AUTOINCREMENT, description TEXT, caloriesBurned INTEGER, date TEXT, duration INTEGER)`;
@@ -60,6 +60,40 @@ export const dev_removeTable = async (db: SQLiteDatabase, tableName: String) => 
 	}
 };
 
+export const setUserData = async (db: SQLiteDatabase, user: User) => {
+	//TODO: ensure that user data is not already set
+	const checkQuery = `SELECT * FROM userData`;
+	try {
+		const results = await db.executeSql(checkQuery, []);
+		if (results[0].rows.length > 0) {
+			throw Error("User data already set");
+		} else {
+			const s: number = user.sex ? 1 : 0 | 2;
+			const query = `INSERT INTO userData (name, age, sex, weight, height, goal, daily, howActive, end) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+			const vals = [
+				user.name,
+				user.age,
+				s,
+				user.weight,
+				user.height,
+				user.goal,
+				user.daily,
+				user.howActive,
+				user.end.day + "-" + user.end.month + "-" + user.end.year,
+			];
+			try {
+				await db.executeSql(query, vals);
+			} catch (error) {
+				console.error(error);
+				throw Error("Could not set user data");
+			}
+		}
+	} catch (error) {
+		console.error(error);
+		throw Error("Could not check if user data is already set");
+	}
+};
+
 export const addFood = async (db: SQLiteDatabase, food: Food) => {
 	const query = `INSERT INTO nutritional (name, calories, protein, carbs, sugars, fats, saturates, isVisible) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
 	const vals = [
@@ -72,7 +106,7 @@ export const addFood = async (db: SQLiteDatabase, food: Food) => {
 		food.saturates,
 		food.isVisible ? 1 : 0,
 	];
-	try{
+	try {
 		await db.executeSql(query, vals);
 	} catch (error) {
 		console.log(error);
@@ -88,10 +122,33 @@ export const addWorkout = async (db: SQLiteDatabase, workout: Workout) => {
 		workout.date.day + "-" + workout.date.month + "-" + workout.date.year,
 		workout.length,
 	];
-	try{
+	try {
 		await db.executeSql(query, vals);
 	} catch (error) {
 		console.log(error);
 		throw Error("Could not insert food into table");
+	}
+};
+
+export const addIntake = async (db: SQLiteDatabase, intake: Intake) => {
+	const query = `INSERT INTO intake (foodId, date) VALUES (?, ?)`;
+	const vals = [intake.foodId, intake.date.day + "-" + intake.date.month + "-" + intake.date.year];
+	try {
+		await db.executeSql(query, vals);
+	} catch (error) {
+		console.log(error);
+		throw Error("Could not insert intake into table");
+	}
+};
+
+export const selectFoodById = async (db: SQLiteDatabase, foodId: number): Promise<Food> => {
+	const query = `SELECT * FROM nutritional WHERE foodId = ?`;
+	const vals = [foodId];
+	try {
+		const results = await db.executeSql(query, vals);
+		return results[0].rows.item(0);
+	} catch (error) {
+		console.error(error);
+		throw Error("Could not select food by ID");
 	}
 };
