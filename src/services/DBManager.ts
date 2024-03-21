@@ -1,4 +1,5 @@
 import {ResultSet, SQLiteDatabase, enablePromise, openDatabase} from "react-native-sqlite-storage";
+import {valDate} from "./Validator";
 
 // Enable promise for SQLite
 enablePromise(true);
@@ -61,7 +62,6 @@ export const dev_removeTable = async (db: SQLiteDatabase, tableName: String) => 
 };
 
 export const setUserData = async (db: SQLiteDatabase, user: User) => {
-	//TODO: ensure that user data is not already set
 	const checkQuery = `SELECT * FROM userData`;
 	try {
 		const results = await db.executeSql(checkQuery, []);
@@ -141,6 +141,17 @@ export const addIntake = async (db: SQLiteDatabase, intake: Intake) => {
 	}
 };
 
+export const selectUserData = async (db: SQLiteDatabase): Promise<User> => {
+	const query = `SELECT * FROM userData`;
+	try {
+		const results = await db.executeSql(query, []);
+		return results[0].rows.item(0);
+	} catch (error) {
+		console.error(error);
+		throw Error("Could not select user data");
+	}
+};
+
 export const selectFoodById = async (db: SQLiteDatabase, foodId: number): Promise<Food> => {
 	const query = `SELECT * FROM nutritional WHERE foodId = ?`;
 	const vals = [foodId];
@@ -150,5 +161,66 @@ export const selectFoodById = async (db: SQLiteDatabase, foodId: number): Promis
 	} catch (error) {
 		console.error(error);
 		throw Error("Could not select food by ID");
+	}
+};
+
+export const selectVisibleFoods = async (db: SQLiteDatabase): Promise<Food[]> => {
+	const query = `SELECT * FROM nutritional WHERE isVisible = 1`;
+	try {
+		const results = await db.executeSql(query, []);
+		const foods: Food[] = [];
+		for (let i = 0; i < results[0].rows.length; i++) {
+			foods.push({...results[0].rows.item(i), isVisible: results[0].rows.item(i).isVisible === 1});
+		}
+		return foods;
+	} catch (error) {
+		console.error(error);
+		throw Error("Could not select visible foods");
+	}
+};
+
+export const selectIntakeByDate = async (
+	db: SQLiteDatabase,
+	date: BasicDate,
+): Promise<Intake[]> => {
+	if (valDate(date)) {
+		const query = `SELECT * FROM intake WHERE date = ?`;
+		const vals = [date.day + "-" + date.month + "-" + date.year];
+		try {
+			const results = await db.executeSql(query, vals);
+			const intakes: Intake[] = [];
+			for (let i = 0; i < results[0].rows.length; i++) {
+				intakes.push({...results[0].rows.item(i), date: date});
+			}
+			return intakes;
+		} catch (error) {
+			console.error(error);
+			throw Error("Could not select intake by date");
+		}
+	} else {
+		throw Error("Invalid date");
+	}
+};
+
+export const selectWorkoutsByDate = async (
+	db: SQLiteDatabase,
+	date: BasicDate,
+): Promise<Workout[]> => {
+	if (valDate(date)) {
+		const query = `SELECT * FROM workouts WHERE date = ?`;
+		const vals = [date.day + "-" + date.month + "-" + date.year];
+		try {
+			const results = await db.executeSql(query, vals);
+			const workouts: Workout[] = [];
+			for (let i = 0; i < results[0].rows.length; i++) {
+				workouts.push({...results[0].rows.item(i), date: date});
+			}
+			return workouts;
+		} catch (error) {
+			console.error(error);
+			throw Error("Could not select workouts by date");
+		}
+	} else {
+		throw Error("Invalid date");
 	}
 };

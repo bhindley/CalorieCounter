@@ -1,4 +1,4 @@
-declare interface date {
+declare interface BasicDate {
     day: number;  //in dd format
     month: number; //in mm format
     year: number; //in yyyy format
