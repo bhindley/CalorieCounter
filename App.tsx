@@ -28,6 +28,7 @@ import {
 import ListItem_CommonFoods from "./src/components/ListItem_CommonFoods";
 
 function App(): React.JSX.Element {
+
 	const loadData = useCallback(async () => {
 		try {
 			const db = await dbm.connectToDatabase();

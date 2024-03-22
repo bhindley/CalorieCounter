@@ -1,15 +1,21 @@
-import React, {useState, useEffect} from "react";
-import {Text, View} from "react-native";
-import * as db from "../services/DBManager.js";
+import React, {useState, useEffect, useCallback} from "react";
+import {Text, View, StyleSheet} from "react-native";
+import * as dbm from "../services/DBManager.js";
 
 export default function ListItem_CommonFoods(props: {foodId: number}) {
 	const [foodData, setFoodData] = useState<any>(null);
 
+	const loadData = useCallback(async () => {
+		try {
+			const db = await dbm.connectToDatabase();
+		} catch (error) {
+			console.error(error);
+		}
+	}, []);
+
 	useEffect(() => {
-		db.selectFoodById(props.foodId).then(data => {
-			setFoodData(data);
-		});
-	}, [props.foodId]);
+		loadData();
+	}, [loadData]);
 
 	return (
 		<View>
@@ -17,3 +23,7 @@ export default function ListItem_CommonFoods(props: {foodId: number}) {
 		</View>
 	);
 }
+
+const localStyles = StyleSheet.create({
+	
+})
