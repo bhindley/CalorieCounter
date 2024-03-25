@@ -16,18 +16,15 @@ import {
 	useColorScheme,
 	View,
 } from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-import {
-	Colors,
-	DebugInstructions,
-	Header,
-	LearnMoreLinks,
-	ReloadInstructions,
-} from "react-native/Libraries/NewAppScreen";
+import {Home} from "./src/views/Home";
 
-import ListItem_CommonFoods from "./src/components/ListItem_CommonFoods";
+const Stack = createNativeStackNavigator();
 
 function App(): React.JSX.Element {
+
 	const loadData = useCallback(async () => {
 		try {
 			const db = await dbm.connectToDatabase();
@@ -42,9 +39,16 @@ function App(): React.JSX.Element {
 	}, [loadData]);
 
 	return (
-		<SafeAreaView>
-			<ListItem_CommonFoods foodId={1} />
-		</SafeAreaView>
+		<NavigationContainer>
+			<Stack.Navigator>
+				<Stack.Screen name="Home" component={} />
+				<Stack.Screen name="Profile" component={} />
+				<Stack.Screen name="Add Food" component={} />
+				<Stack.Screen name="Add Workout" component={} />
+				<Stack.Screen name="Statistics" component={} />
+				<Stack.Screen name="First time use quiz" component={} />
+			</Stack.Navigator>
+		</NavigationContainer>
 	);
 }
 
