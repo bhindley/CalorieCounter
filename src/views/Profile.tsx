@@ -1,10 +1,10 @@
 import React from 'react';
 import { Text, View } from 'react-native';
 
-export default function AddFood(): React.JSX.Element {
+export default function Profile(): React.JSX.Element {
     return (
         <View>
-            <Text>AddFood</Text>
+            <Text>Profile</Text>
         </View>
     )
 }

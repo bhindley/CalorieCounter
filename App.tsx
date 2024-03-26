@@ -19,7 +19,12 @@ import {
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-import {Home} from "./src/views/Home";
+import Home from "./src/views/Home.tsx";
+import Profile from "./src/views/Profile.tsx";
+import AddFood from "./src/views/AddFood.tsx";
+import AddWorkout from "./src/views/AddWorkout.tsx";
+import Statistics from "./src/views/Statistics.tsx";
+import FirstTimeUseQuiz from "./src/views/FirstTimeUseQuiz.tsx";
 
 const Stack = createNativeStackNavigator();
 
@@ -41,12 +46,12 @@ function App(): React.JSX.Element {
 	return (
 		<NavigationContainer>
 			<Stack.Navigator>
-				<Stack.Screen name="Home" component={} />
-				<Stack.Screen name="Profile" component={} />
-				<Stack.Screen name="Add Food" component={} />
-				<Stack.Screen name="Add Workout" component={} />
-				<Stack.Screen name="Statistics" component={} />
-				<Stack.Screen name="First time use quiz" component={} />
+				<Stack.Screen name="Home" component={Home} />
+				<Stack.Screen name="Profile" component={Profile} />
+				<Stack.Screen name="Add Food" component={AddFood} />
+				<Stack.Screen name="Add Workout" component={AddWorkout} />
+				<Stack.Screen name="Statistics" component={Statistics} />
+				<Stack.Screen name="First time use quiz" component={FirstTimeUseQuiz} />
 			</Stack.Navigator>
 		</NavigationContainer>
 	);
