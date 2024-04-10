@@ -16,16 +16,21 @@ import {
 	useColorScheme,
 	View,
 } from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-import {
-	Colors,
-	DebugInstructions,
-	Header,
-	LearnMoreLinks,
-	ReloadInstructions,
-} from "react-native/Libraries/NewAppScreen";
+import Home from "./src/views/Home.tsx";
+import Profile from "./src/views/Profile.tsx";
+import AddFood from "./src/views/AddFood.tsx";
+import AddWorkout from "./src/views/AddWorkout.tsx";
+import Statistics from "./src/views/Statistics.tsx";
+import FirstTimeUseQuiz from "./src/views/FirstTimeUseQuiz.tsx";
 
+<<<<<<< HEAD
 import Dev_InsertDataModule from "./src/components/Dev_InsertDataModule.tsx";
+=======
+const Stack = createNativeStackNavigator();
+>>>>>>> f4347ddbbba3f02f3a095db9af88486d62fece28
 
 function App(): React.JSX.Element {
 
@@ -43,9 +48,22 @@ function App(): React.JSX.Element {
 	}, [loadData]);
 
 	return (
+<<<<<<< HEAD
 		
 			<Dev_InsertDataModule />
 		
+=======
+		<NavigationContainer>
+			<Stack.Navigator>
+				<Stack.Screen name="Home" component={Home} />
+				<Stack.Screen name="Profile" component={Profile} />
+				<Stack.Screen name="Add Food" component={AddFood} />
+				<Stack.Screen name="Add Workout" component={AddWorkout} />
+				<Stack.Screen name="Statistics" component={Statistics} />
+				<Stack.Screen name="First time use quiz" component={FirstTimeUseQuiz} />
+			</Stack.Navigator>
+		</NavigationContainer>
+>>>>>>> f4347ddbbba3f02f3a095db9af88486d62fece28
 	);
 }
 

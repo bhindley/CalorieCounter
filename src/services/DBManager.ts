@@ -224,3 +224,19 @@ export const selectWorkoutsByDate = async (
 		throw Error("Invalid date");
 	}
 };
+
+export const searchFoods = async (db: SQLiteDatabase, search: string): Promise<Food[]> => {
+	const query = `SELECT * FROM nutritional WHERE name LIKE ?`;
+	const vals = ["%" + search + "%"];
+	try {
+		const results = await db.executeSql(query, vals);
+		const foods: Food[] = [];
+		for (let i = 0; i < results[0].rows.length; i++) {
+			foods.push({...results[0].rows.item(i), isVisible: results[0].rows.item(i).isVisible === 1});
+		}
+		return foods;
+	} catch (error) {
+		console.error(error);
+		throw Error("Could not search foods");
+	}
+};
