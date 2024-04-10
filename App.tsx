@@ -25,7 +25,7 @@ import {
 	ReloadInstructions,
 } from "react-native/Libraries/NewAppScreen";
 
-import ListItem_CommonFoods from "./src/components/ListItem_CommonFoods";
+import Dev_InsertDataModule from "./src/components/Dev_InsertDataModule.tsx";
 
 function App(): React.JSX.Element {
 
@@ -43,9 +43,9 @@ function App(): React.JSX.Element {
 	}, [loadData]);
 
 	return (
-		<SafeAreaView>
-			<ListItem_CommonFoods foodId={1} />
-		</SafeAreaView>
+		
+			<Dev_InsertDataModule />
+		
 	);
 }
 
