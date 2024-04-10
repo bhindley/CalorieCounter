@@ -26,11 +26,8 @@ import AddWorkout from "./src/views/AddWorkout.tsx";
 import Statistics from "./src/views/Statistics.tsx";
 import FirstTimeUseQuiz from "./src/views/FirstTimeUseQuiz.tsx";
 
-<<<<<<< HEAD
 import Dev_InsertDataModule from "./src/components/Dev_InsertDataModule.tsx";
-=======
 const Stack = createNativeStackNavigator();
->>>>>>> f4347ddbbba3f02f3a095db9af88486d62fece28
 
 function App(): React.JSX.Element {
 
@@ -48,11 +45,6 @@ function App(): React.JSX.Element {
 	}, [loadData]);
 
 	return (
-<<<<<<< HEAD
-		
-			<Dev_InsertDataModule />
-		
-=======
 		<NavigationContainer>
 			<Stack.Navigator>
 				<Stack.Screen name="Home" component={Home} />
@@ -63,7 +55,6 @@ function App(): React.JSX.Element {
 				<Stack.Screen name="First time use quiz" component={FirstTimeUseQuiz} />
 			</Stack.Navigator>
 		</NavigationContainer>
->>>>>>> f4347ddbbba3f02f3a095db9af88486d62fece28
 	);
 }
 
