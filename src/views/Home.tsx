@@ -1,10 +1,10 @@
-import React from 'react';
-import { Text, View } from 'react-native';
+import React from "react";
+import {Text, View} from "react-native";
 
 export default function Home(): React.JSX.Element {
-    return (
-        <View>
-            <Text>Home</Text>
-        </View>
-    )
+	return (
+		<View>
+			<Text>Home</Text>
+		</View>
+	);
 }
