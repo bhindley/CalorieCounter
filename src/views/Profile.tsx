@@ -8,13 +8,16 @@ import DropDownPicker from 'react-native-dropdown-picker';
 
 export default function Profile(): React.JSX.Element {
 
-const [input, setInput] = useState(false)
+const [input, setInput] = useState(false);
 
-const [user, setUser] = useState(false)
+const [user, setUser] = useState(false);
+
 
 const [showRadioButton, setShowRadioButton] = useState(false);
 
 const [selectedValue, setSelectedValue] = useState("option1");
+
+
 
 const radioButtonPress = () => {
   setShowRadioButton(!showRadioButton);
@@ -24,9 +27,12 @@ const radioButtonChange = (value: string) => {
   setSelectedValue(value);
 };
 
+
+
 const userDetailsPress = () => {
   setUser(true);
 }
+
 
 const weightGoalPress = () => {
   setInput(true);
@@ -39,6 +45,8 @@ const unitPress = () => {
 const reminderPress = () => {
   setOpen(true);
 }
+
+
 const [text, setText] = useState("");
 	const [open, setOpen] = useState(false);
 	const [value, setValue] = useState(null);
@@ -61,8 +69,8 @@ const [text, setText] = useState("");
       {showRadioButton && (
         <RadioButton.Group onValueChange={radioButtonChange} value={selectedValue}>
         <View style={{flexDirection: "row", alignItems: "center"}}>
-          <RadioButton value="male" color="blue" />
-          <Text>Set Notifications?</Text>
+          <RadioButton value="user" color="blue" />
+          <Text>Set Notifications</Text>
         </View>
       </RadioButton.Group>
       )}
@@ -100,6 +108,13 @@ const [text, setText] = useState("");
         />
         
       )}
+      {user && (
+        <TextInput
+          style={{ borderColor: 'gray', borderWidth: 1, marginTop: 10, padding: 5, width: 200 }}
+          placeholder="Update Height"
+        />
+        
+      )}
 
       <TouchableOpacity style = {styles.InputStyles.button_primary} onPress={weightGoalPress}>
         <Text style = {styles.TextStyles.subtitle}>Weight Goals</Text>
@@ -114,11 +129,16 @@ const [text, setText] = useState("");
       <TouchableOpacity style = {styles.InputStyles.button_primary} onPress={() => {}}>
         <Text style = {styles.TextStyles.subtitle}>Display & Accessibility</Text>
       </TouchableOpacity>
+     
 
       <TouchableOpacity style = {styles.InputStyles.button_primary} onPress={() => {}}>
         <Text style = {styles.TextStyles.subtitle}>Statistics & Trends</Text>
       </TouchableOpacity>
+
+      
     </View>
+
+
   );
 }
 
