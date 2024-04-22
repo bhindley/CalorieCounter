@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { Text, View, TouchableOpacity, TextInput, StyleSheet} from 'react-native';
-import * as styles from '../Styles'
+import * as styles from '../Styles';
 import { RadioButton } from 'react-native-paper';
 import DropDownPicker from 'react-native-dropdown-picker';
+import * as dbm from '../services/DBManager';
+
 
 
 
@@ -11,6 +13,45 @@ export default function Profile(): React.JSX.Element {
 const [input, setInput] = useState(false);
 
 const [user, setUser] = useState(false);
+
+const [userName, setUserName] = useState(""); 
+
+const [userAge, setUserAge] = useState(""); 
+
+const [userHeight, setUserHeight] = useState(""); 
+
+const [userWeight, setUserWeight] = useState(""); 
+
+const [userGoal, setUserGoal] = useState(""); 
+
+const [userDaily, setUserDaily] = useState(""); 
+
+const [userActive, setUserActive] = useState(""); 
+
+const updateUserDetails = async () => {
+  try {
+   
+    const db = await dbm.connectToDatabase();
+
+    await dbm.setUserData(db, {
+      name: userName,
+      age: parseInt(userAge),
+      height: parseFloat(userHeight),
+      weight: parseInt(userWeight),
+      goal: parseFloat(userGoal),
+      daily: parseFloat(userDaily),
+      howActive: parseInt(userActive),
+      end: undefined
+    });
+    
+    await db.close();
+
+  } catch (error) {
+    console.error("Error updating user details:", error);
+  }
+};
+
+
 
 
 const [showRadioButton, setShowRadioButton] = useState(false);
@@ -98,6 +139,8 @@ const [text, setText] = useState("");
         <TextInput
           style={{ borderColor: 'gray', borderWidth: 1, marginTop: 10, padding: 5, width: 200 }}
           placeholder="Update Name"
+          value={userName}
+          onChangeText={setUserName}
         />
         
       )}
@@ -105,6 +148,8 @@ const [text, setText] = useState("");
         <TextInput
           style={{ borderColor: 'gray', borderWidth: 1, marginTop: 10, padding: 5, width: 200 }}
           placeholder="Update Age"
+          value={userAge}
+          onChangeText={setUserAge}
         />
         
       )}
@@ -112,6 +157,35 @@ const [text, setText] = useState("");
         <TextInput
           style={{ borderColor: 'gray', borderWidth: 1, marginTop: 10, padding: 5, width: 200 }}
           placeholder="Update Height"
+          value={userHeight}
+          onChangeText={setUserHeight}
+        />
+        
+      )}
+      {user && (
+        <TextInput
+          style={{ borderColor: 'gray', borderWidth: 1, marginTop: 10, padding: 5, width: 200 }}
+          placeholder="Update Weight"
+          value={userWeight}
+          onChangeText={setUserWeight}
+        />
+        
+      )}
+       {user && (
+        <TextInput
+          style={{ borderColor: 'gray', borderWidth: 1, marginTop: 10, padding: 5, width: 200 }}
+          placeholder="Update Daily Intake"
+          value={userDaily}
+          onChangeText={setUserDaily}
+        />
+        
+      )}
+       {user && (
+        <TextInput
+          style={{ borderColor: 'gray', borderWidth: 1, marginTop: 10, padding: 5, width: 200 }}
+          placeholder="Update Activity Level"
+          value={userActive}
+          onChangeText={setUserActive}
         />
         
       )}
@@ -122,7 +196,9 @@ const [text, setText] = useState("");
       {input && (
         <TextInput
           style={{ borderColor: 'gray', borderWidth: 1, marginTop: 10, padding: 5, width: 200 }}
-          placeholder="Enter new weight"
+          placeholder="Enter weight goal"
+          
+          
         />
       )}
 
@@ -133,6 +209,13 @@ const [text, setText] = useState("");
 
       <TouchableOpacity style = {styles.InputStyles.button_primary} onPress={() => {}}>
         <Text style = {styles.TextStyles.subtitle}>Statistics & Trends</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        style={styles.InputStyles.button_primary}
+        onPress={updateUserDetails} // Call the function to update user details
+      >
+        <Text style={styles.TextStyles.subtitle}>Save Changes</Text>
       </TouchableOpacity>
 
       
