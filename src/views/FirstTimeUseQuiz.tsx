@@ -70,9 +70,9 @@ export default function FirstTimeUseQuiz(): React.JSX.Element {
                 <TextInput placeholder="Enter here..." onChangeText={newText => setText(newText)} />
                 <View style={{flexDirection: "column", justifyContent: "space-between"}}>
                     <Text style={Styles.TextStyles.subtitle}>Activity Rate</Text>
-                    <DropDownPicker open={open} value={value} items={items} setOpen={setOpen} onOpen={onOpen} setValue={setValue} setItems={setItems} />
+                    <DropDownPicker open={open} value={value} items={items} zIndex={5000} setOpen={setOpen} onOpen={onOpen} setValue={setValue} setItems={setItems} />
                     <Text style={Styles.TextStyles.subtitle}>Weight Goal</Text>
-                    <DropDownPicker open={open2} value={value2} items={items2} setOpen={setOpen2} onOpen={onOpen2} setValue={setValue2} setItems={setItems2} />
+                    <DropDownPicker open={open2} value={value2} items={items2} zIndex={4000} setOpen={setOpen2} onOpen={onOpen2} setValue={setValue2} setItems={setItems2} />
                 </View>
             </View>
         </View>
