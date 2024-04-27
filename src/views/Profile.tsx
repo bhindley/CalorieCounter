@@ -48,7 +48,7 @@ const updateUserDetails = async () => {
       goal: parseFloat(userGoal),
       daily: parseFloat(userDaily),
       howActive: parseInt(userActive),
-      end: userEnd
+      end: undefined 
     });
     
     await db.close();
@@ -222,10 +222,6 @@ const [text, setText] = useState("");
         <Text style = {styles.TextStyles.subtitle}>Display & Accessibility</Text>
       </TouchableOpacity>
      
-
-      <TouchableOpacity style = {styles.InputStyles.button_primary} onPress={() => {}}>
-        <Text style = {styles.TextStyles.subtitle}>Statistics & Trends</Text>
-      </TouchableOpacity>
 
       <TouchableOpacity
         style={styles.InputStyles.button_primary}
