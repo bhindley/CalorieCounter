@@ -1,8 +1,8 @@
 import React from "react";
 import {Text, View, TouchableOpacity} from "react-native";
-import {NavigationAction} from "@react-navigation/native"
+import {NavigationAction} from "@react-navigation/native";
 
-export default function Home({ navigation }): React.JSX.Element {
+export default function Home({navigation}): React.JSX.Element {
 	return (
 		<View>
 			<TouchableOpacity onPress={navigation.push("Add Workout")}>
