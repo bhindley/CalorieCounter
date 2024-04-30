@@ -1,8 +1,10 @@
 import React, { useCallback, useState } from 'react';
-import { Text, View, TextInput, StyleSheet} from 'react-native';
+import { Text, View, TextInput, StyleSheet, TouchableOpacity, Button} from 'react-native';
 import * as Styles from '../Styles';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { RadioButton } from 'react-native-paper';
+import DatePicker from 'react-native-date-picker'
+import * as dbm from '../services/DBManager';
 
 
 export default function FirstTimeUseQuiz(): React.JSX.Element {
@@ -45,6 +47,44 @@ export default function FirstTimeUseQuiz(): React.JSX.Element {
         throw new Error('Function not implemented.');
     }
 
+    const [goalShow, setGoalShow] = useState(true);
+    const [endDateShow, setEndDateShow] = useState(false);
+    function eitherGoalOrEndDate(){
+        if(goalShow){
+            setGoalShow(false)
+            setEndDateShow(true)
+        } 
+        else{
+            setGoalShow(true)
+            setEndDateShow(false)
+        }
+    }
+
+    const [date, setDate] = useState(new Date())
+
+    // const setUserDetails = async () => {
+    //     try {
+         
+    //       const db = await dbm.connectToDatabase();
+      
+    //       await dbm.setUserData(db, {
+    //         name: userName,
+    //         age: parseInt(userAge),
+    //         height: parseFloat(userHeight),
+    //         weight: parseInt(userWeight),
+    //         goal: parseFloat(userGoal),
+    //         daily: parseFloat(userDaily),
+    //         howActive: parseInt(userActive),
+    //         end: undefined 
+    //       });
+          
+    //       await db.close();
+      
+    //     } catch (error) {
+    //       console.error("Error updating user details:", error);
+    //     }
+    //   };
+
     return (
         <View>
             <Text style={Styles.TextStyles.title}>About You</Text>
@@ -71,10 +111,33 @@ export default function FirstTimeUseQuiz(): React.JSX.Element {
                 <View style={{flexDirection: "column", justifyContent: "space-between"}}>
                     <Text style={Styles.TextStyles.subtitle}>Activity Rate</Text>
                     <DropDownPicker open={open} value={value} items={items} zIndex={5000} setOpen={setOpen} onOpen={onOpen} setValue={setValue} setItems={setItems} />
-                    <Text style={Styles.TextStyles.subtitle}>Weight Goal</Text>
-                    <DropDownPicker open={open2} value={value2} items={items2} zIndex={4000} setOpen={setOpen2} onOpen={onOpen2} setValue={setValue2} setItems={setItems2} />
+                    <Text></Text>
+                    {goalShow && (
+                        <View>
+                            <Text style={Styles.TextStyles.subtitle}>Weight Goal</Text>
+                            <DropDownPicker open={open2} value={value2} items={items2} zIndex={4000} setOpen={setOpen2} onOpen={onOpen2} setValue={setValue2} setItems={setItems2} />
+                        </View>
+                    )}
+                    {endDateShow && (
+                        <View>
+                            <Text style={Styles.TextStyles.subtitle}>End-date Goal</Text>
+                            <DatePicker date={date} onDateChange={setDate} mode="date"/>
+                        </View>
+                    )}
+                    <Text></Text>
+                    <TouchableOpacity style = {Styles.InputStyles.button_primary} onPress={eitherGoalOrEndDate}>
+                        <Text style = {container.button}>Switch Goal</Text>
+                    </TouchableOpacity>
                 </View>
             </View>
         </View>
     )
 }
+
+const container = StyleSheet.create({
+	button: {
+		fontSize: 14,
+		fontWeight: "bold",
+        color: 'red'
+	}
+});
