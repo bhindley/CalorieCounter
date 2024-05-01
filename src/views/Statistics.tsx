@@ -5,15 +5,14 @@ import { SQLiteDatabase } from "react-native-sqlite-storage";
 
 export default function Statistics({ navigation }): React.JSX.Element {
   const [totalCalories, setTotalCalories] = useState(0);
-  const [caloriesDifference, setCaloriesDifference] = useState(0); // Step 1: State variable for calories difference
-  const [goalWeightUnit, setGoalWeightUnit] = useState(""); // Step 1: State variable for goal weight unit
+  const [caloriesDifference, setCaloriesDifference] = useState(0);
+  const [goalWeightUnit, setGoalWeightUnit] = useState("");
 
   useEffect(() => {
-    fetchTotalCalories();
-    fetchUserData(); // Fetch user data when component mounts
+    fetchData();
   }, []);
 
-  const fetchTotalCalories = async () => {
+  const fetchData = async () => {
     try {
       const db: SQLiteDatabase = await dbm.connectToDatabase();
       const currentDate = new Date();
@@ -25,25 +24,20 @@ export default function Statistics({ navigation }): React.JSX.Element {
         total += food.calories;
       }
       setTotalCalories(total);
-    } catch (error) {
-      console.error("Error fetching total calories:", error);
-    }
-  };
 
-  const fetchUserData = async () => {
-    try {
-      const db: SQLiteDatabase = await dbm.connectToDatabase();
-      const userData = await dbm.selectUserData(db); // Fetch user data from database
-      setGoalWeightUnit(userData.goalWeightUnit); // Set goal weight unit
-      calculateCaloriesDifference(userData.goal); // Calculate calories difference
+      const userData = await dbm.selectUserData(db);
+      if (!userData || !userData.goal) {
+        setGoalWeightUnit("No goal yet");
+        setCaloriesDifference(0); // Reset calories difference
+      } else {
+        const goal = userData.goal;
+        const difference = goal - total;
+        setCaloriesDifference(difference);
+        setGoalWeightUnit("calories"); // Assuming the goal is in calories
+      }
     } catch (error) {
-      console.error("Error fetching user data:", error);
+      console.error("Error fetching data:", error);
     }
-  };
-
-  const calculateCaloriesDifference = (goal: number) => {
-    const difference = goal - totalCalories;
-    setCaloriesDifference(difference);
   };
 
   const navigateToPage = (pageName: string) => {
@@ -72,7 +66,7 @@ export default function Statistics({ navigation }): React.JSX.Element {
       <View style={styles.goalContainer}>
         <Text style={styles.goalText}>Goal Progress:</Text>
         <View style={styles.rectangleBox}>
-          <Text style={styles.goalAmount}>{caloriesDifference} {goalWeightUnit}</Text> {/* Step 4: Display calculated difference with goal weight unit */}
+          <Text style={styles.goalAmount}>{caloriesDifference} {goalWeightUnit}</Text>
         </View>
       </View>
     </View>
@@ -117,7 +111,7 @@ const styles = StyleSheet.create({
     color: "#fff",
   },
   goalContainer: {
-    marginTop: 20, // Adjust spacing as needed
+    marginTop: 20,
     alignItems: "center",
   },
   goalText: {
