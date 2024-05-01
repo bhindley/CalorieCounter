@@ -16,7 +16,7 @@ export const connectToDatabase = async () => {
 };
 
 export const createTables = async (db: SQLiteDatabase) => {
-	const userDataQuery = `CREATE TABLE IF NOT EXISTS userData (name PRIMARY KEY NOT NULL TEXT, age INTEGER, sex INTEGER, weight REAL, height REAL, goal REAL, daily INTEGER, howActive INTEGER, end TEXT)`;
+	const userDataQuery = `CREATE TABLE IF NOT EXISTS userData (name TEXT PRIMARY KEY, age INTEGER, sex INTEGER, weight REAL, height REAL, goal REAL, daily INTEGER, howActive INTEGER, end TEXT)`;
 	const intakeQuery = `CREATE TABLE IF NOT EXISTS intake (intakeId INTEGER PRIMARY KEY AUTOINCREMENT, foodId INTEGER, date TEXT)`;
 	const nutritionalQuery = `CREATE TABLE IF NOT EXISTS nutritional (foodId INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, calories INTEGER, protein REAL, carbs REAL, sugars REAL, fats REAL, saturates REAL, isVisible NUMBER)`;
 	const workoutsQuery = `CREATE TABLE IF NOT EXISTS workouts (workoutId INTEGER PRIMARY KEY AUTOINCREMENT, description TEXT, caloriesBurned INTEGER, date TEXT, duration INTEGER)`;
