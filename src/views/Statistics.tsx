@@ -69,61 +69,88 @@ export default function Statistics({ navigation }): React.JSX.Element {
           <Text style={styles.goalAmount}>{caloriesDifference} {goalWeightUnit}</Text>
         </View>
       </View>
+      <View style={styles.letsGetFitContainer}>
+    <Text style={styles.letsGetFitText}>LET'S GET FIT</Text>
+  </View>
     </View>
   );
 }
+
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#f0f0f0",
+    backgroundColor: "#e6f3ff", // Lighter colorful background
   },
   navigationContainer: {
     flexDirection: "row",
-    marginTop: 50,
+    marginTop: 20, // Adjusted marginTop
     marginBottom: 20,
   },
   navButton: {
     marginRight: 20,
-    padding: 10,
+    paddingVertical: 15,
+    paddingHorizontal: 20,
     backgroundColor: "#ddd",
-    borderRadius: 5,
+    borderRadius: 10,
+  },
+  navButtonText: {
+    fontWeight: "bold",
   },
   caloriesContainer: {
+    marginTop: 50, // Adjusted marginTop
     alignItems: "center",
   },
   caloriesText: {
-    marginBottom: 10,
+    marginBottom: 20,
+    fontWeight: "bold",
+  },
+  caloriesRectangleBox: {
+    backgroundColor: "#00f",
+    padding: 10,
+    borderRadius: 10,
   },
   circle: {
-    width: 150,
-    height: 150,
-    borderRadius: 75,
+    width: 200,
+    height: 200,
+    borderRadius: 100,
     backgroundColor: "#00f",
     justifyContent: "center",
     alignItems: "center",
   },
   caloriesAmount: {
-    fontSize: 24,
+    fontSize: 32,
     fontWeight: "bold",
     color: "#fff",
   },
   goalContainer: {
-    marginTop: 20,
+    position: "absolute",
+    top: 20, // Positioned on top of the buttons
     alignItems: "center",
   },
   goalText: {
-    marginBottom: 10,
-  },
-  rectangleBox: {
-    backgroundColor: "#ccc",
-    padding: 10,
-    borderRadius: 5,
-  },
-  goalAmount: {
-    fontSize: 18,
+    marginBottom: 20,
     fontWeight: "bold",
   },
+  goalRectangleBox: {
+    backgroundColor: "#ccc",
+    padding: 15, // Increased padding
+    borderRadius: 10,
+  },
+  goalAmount: {
+    fontSize: 36, // Increased fontSize
+    fontWeight: "bold",
+  },
+  letsGetFitContainer: {
+    marginTop: 20, // Adjusted marginTop
+    alignItems: "center",
+  },
+  letsGetFitText: {
+    fontSize: 24,
+    fontWeight: "bold",
+    color: "#333", // Darker text color
+  },
 });
+
