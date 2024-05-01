@@ -18,13 +18,11 @@ export default function Statistics({ navigation }): React.JSX.Element {
       const formattedDate = `${currentDate.getFullYear()}-${currentDate.getMonth() + 1}-${currentDate.getDate()}`;
       const intakes = await dbm.selectIntakeByDate(db, formattedDate);
       let total = 0;
-      intakes.forEach(intake => {
-        // Retrieve food information for each intake record
-        dbm.selectFoodById(db, intake.foodId).then(food => {
-          total += food.calories; // Sum up the calorie amounts
-          setTotalCalories(total);
-        });
-      });
+      for (const intake of intakes) {
+        const food = await dbm.selectFoodById(db, intake.foodId);
+        total += food.calories;
+      }
+      setTotalCalories(total);
     } catch (error) {
       console.error("Error fetching total calories:", error);
     }
@@ -37,19 +35,19 @@ export default function Statistics({ navigation }): React.JSX.Element {
   return (
     <View style={styles.container}>
       <View style={styles.navigationContainer}>
-        <TouchableOpacity onPress={() => navigateToPage("Home")}>
+        <TouchableOpacity style={styles.navButton} onPress={() => navigateToPage("Home")}>
           <Text>Home</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigateToPage("Profile")}>
+        <TouchableOpacity style={styles.navButton} onPress={() => navigateToPage("Profile")}>
           <Text>Profile</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigateToPage("Quiz")}>
+        <TouchableOpacity style={styles.navButton} onPress={() => navigateToPage("Quiz")}>
           <Text>Quiz</Text>
         </TouchableOpacity>
       </View>
       <View style={styles.caloriesContainer}>
         <Text style={styles.caloriesText}>Total Calories Consumed Today:</Text>
-        <View style={styles.rectangleBox}>
+        <View style={styles.circle}>
           <Text style={styles.caloriesAmount}>{totalCalories} kcal</Text>
         </View>
       </View>
@@ -62,10 +60,18 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    backgroundColor: "#f0f0f0",
   },
   navigationContainer: {
     flexDirection: "row",
+    marginTop: 50,
     marginBottom: 20,
+  },
+  navButton: {
+    marginRight: 20,
+    padding: 10,
+    backgroundColor: "#ddd",
+    borderRadius: 5,
   },
   caloriesContainer: {
     alignItems: "center",
@@ -73,13 +79,17 @@ const styles = StyleSheet.create({
   caloriesText: {
     marginBottom: 10,
   },
-  rectangleBox: {
-    backgroundColor: "#ccc",
-    padding: 10,
-    borderRadius: 5,
+  circle: {
+    width: 150,
+    height: 150,
+    borderRadius: 75,
+    backgroundColor: "#00f",
+    justifyContent: "center",
+    alignItems: "center",
   },
   caloriesAmount: {
-    fontSize: 18,
+    fontSize: 24,
     fontWeight: "bold",
+    color: "#fff",
   },
 });
