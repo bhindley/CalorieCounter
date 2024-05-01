@@ -5,9 +5,12 @@ import { SQLiteDatabase } from "react-native-sqlite-storage";
 
 export default function Statistics({ navigation }): React.JSX.Element {
   const [totalCalories, setTotalCalories] = useState(0);
+  const [caloriesDifference, setCaloriesDifference] = useState(0); // Step 1: State variable for calories difference
+  const [goalWeightUnit, setGoalWeightUnit] = useState(""); // Step 1: State variable for goal weight unit
 
   useEffect(() => {
     fetchTotalCalories();
+    fetchUserData(); // Fetch user data when component mounts
   }, []);
 
   const fetchTotalCalories = async () => {
@@ -25,6 +28,22 @@ export default function Statistics({ navigation }): React.JSX.Element {
     } catch (error) {
       console.error("Error fetching total calories:", error);
     }
+  };
+
+  const fetchUserData = async () => {
+    try {
+      const db: SQLiteDatabase = await dbm.connectToDatabase();
+      const userData = await dbm.selectUserData(db); // Fetch user data from database
+      setGoalWeightUnit(userData.goalWeightUnit); // Set goal weight unit
+      calculateCaloriesDifference(userData.goal); // Calculate calories difference
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    }
+  };
+
+  const calculateCaloriesDifference = (goal: number) => {
+    const difference = goal - totalCalories;
+    setCaloriesDifference(difference);
   };
 
   const navigateToPage = (pageName: string) => {
@@ -48,6 +67,12 @@ export default function Statistics({ navigation }): React.JSX.Element {
         <Text style={styles.caloriesText}>Total Calories Consumed Today:</Text>
         <View style={styles.circle}>
           <Text style={styles.caloriesAmount}>{totalCalories} kcal</Text>
+        </View>
+      </View>
+      <View style={styles.goalContainer}>
+        <Text style={styles.goalText}>Goal Progress:</Text>
+        <View style={styles.rectangleBox}>
+          <Text style={styles.goalAmount}>{caloriesDifference} {goalWeightUnit}</Text> {/* Step 4: Display calculated difference with goal weight unit */}
         </View>
       </View>
     </View>
@@ -90,5 +115,21 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "bold",
     color: "#fff",
+  },
+  goalContainer: {
+    marginTop: 20, // Adjust spacing as needed
+    alignItems: "center",
+  },
+  goalText: {
+    marginBottom: 10,
+  },
+  rectangleBox: {
+    backgroundColor: "#ccc",
+    padding: 10,
+    borderRadius: 5,
+  },
+  goalAmount: {
+    fontSize: 18,
+    fontWeight: "bold",
   },
 });
