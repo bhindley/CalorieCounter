@@ -4,12 +4,13 @@ import * as styles from '../Styles';
 import { RadioButton } from 'react-native-paper';
 import DropDownPicker from 'react-native-dropdown-picker';
 import * as dbm from '../services/DBManager';
+import DatePicker from 'react-native-date-picker'
 import * as validate from '../services/Validator'
 
 
 
 
-export default function Profile(): React.JSX.Element {
+export default function Profile({ navigation }: any): React.JSX.Element {
 
   // states for different components and storing user data
 
@@ -222,6 +223,9 @@ const [text, setText] = useState("");
         <Text style = {styles.TextStyles.subtitle}>Display & Accessibility</Text>
       </TouchableOpacity>
      
+      <TouchableOpacity style = {styles.InputStyles.button_primary} onPress={() => navigation.navigate("Statistics")}>
+        <Text style = {styles.TextStyles.subtitle}>Statistics & Trends</Text>
+      </TouchableOpacity>
 
       <TouchableOpacity
         style={styles.InputStyles.button_primary}
