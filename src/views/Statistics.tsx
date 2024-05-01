@@ -98,6 +98,7 @@ const styles = StyleSheet.create({
   },
   navButtonText: {
     fontWeight: "bold",
+    
   },
   caloriesContainer: {
     marginTop: 50, // Adjusted marginTop
