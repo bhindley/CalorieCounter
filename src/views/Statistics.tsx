@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { Text, View, TouchableOpacity, StyleSheet } from "react-native";
 import * as dbm from "../services/DBManager.ts";
@@ -42,6 +43,11 @@ export default function Statistics({ navigation }): React.JSX.Element {
 
   const navigateToPage = (pageName: string) => {
     navigation.navigate(pageName);
+  };
+
+  const handleFoodAdded = () => {
+    // Refresh statistics data
+    fetchData();
   };
 
   return (

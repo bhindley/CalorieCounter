@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Text, View, TextInput, Button, Alert } from "react-native";
 import * as dbm from "../services/DBManager.ts";
@@ -86,3 +87,5 @@ export default function AddFood(): React.JSX.Element {
     </View>
   );
 }
+
+
