@@ -4,11 +4,15 @@ import * as styles from '../Styles';
 import { RadioButton } from 'react-native-paper';
 import DropDownPicker from 'react-native-dropdown-picker';
 import * as dbm from '../services/DBManager';
+import DatePicker from 'react-native-date-picker'
+import * as validate from '../services/Validator'
 
 
 
 
-export default function Profile(): React.JSX.Element {
+export default function Profile({ navigation }: any): React.JSX.Element {
+
+  // states for different components and storing user data
 
 const [input, setInput] = useState(false);
 
@@ -28,6 +32,10 @@ const [userDaily, setUserDaily] = useState("");
 
 const [userActive, setUserActive] = useState(""); 
 
+const [userEnd, setUserEnd] = useState(""); 
+
+// database function to update stored user details
+
 const updateUserDetails = async () => {
   try {
    
@@ -41,7 +49,7 @@ const updateUserDetails = async () => {
       goal: parseFloat(userGoal),
       daily: parseFloat(userDaily),
       howActive: parseInt(userActive),
-      end: undefined
+      end: undefined 
     });
     
     await db.close();
@@ -97,7 +105,6 @@ const [text, setText] = useState("");
 		{label: "Pounds", value: "lb/s"},
 		
 	]);
-
 
 
   return (
@@ -190,6 +197,16 @@ const [text, setText] = useState("");
         
       )}
 
+{user && (
+        <TextInput
+          style={{ borderColor: 'gray', borderWidth: 1, marginTop: 10, padding: 5, width: 200 }}
+          placeholder="Update end date"
+          value={userEnd}
+          onChangeText={setUserEnd}
+        />
+        
+      )}
+
       <TouchableOpacity style = {styles.InputStyles.button_primary} onPress={weightGoalPress}>
         <Text style = {styles.TextStyles.subtitle}>Weight Goals</Text>
       </TouchableOpacity>
@@ -206,14 +223,13 @@ const [text, setText] = useState("");
         <Text style = {styles.TextStyles.subtitle}>Display & Accessibility</Text>
       </TouchableOpacity>
      
-
-      <TouchableOpacity style = {styles.InputStyles.button_primary} onPress={() => {}}>
+      <TouchableOpacity style = {styles.InputStyles.button_primary} onPress={() => navigation.navigate("Statistics")}>
         <Text style = {styles.TextStyles.subtitle}>Statistics & Trends</Text>
       </TouchableOpacity>
 
       <TouchableOpacity
         style={styles.InputStyles.button_primary}
-        onPress={updateUserDetails} // Call the function to update user details
+        onPress={updateUserDetails} 
       >
         <Text style={styles.TextStyles.subtitle}>Save Changes</Text>
       </TouchableOpacity>
@@ -226,10 +242,8 @@ const [text, setText] = useState("");
 }
 
 const container = StyleSheet.create({
-  container: {
-    paddingTop: 20,
-    paddingLeft: 10,
-  }
-})
-
-
+	container: {
+		paddingTop: 20,
+		paddingLeft: 10,
+	},
+});
