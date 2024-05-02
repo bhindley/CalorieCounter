@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
 import {ResultSet, SQLiteDatabase, enablePromise, openDatabase} from "react-native-sqlite-storage";
 import {valDate} from "./Validator";
 
@@ -16,10 +17,10 @@ export const connectToDatabase = async () => {
 };
 
 export const createTables = async (db: SQLiteDatabase) => {
-	const userDataQuery = `CREATE TABLE IF NOT EXISTS userData (name TEXT PRIMARY KEY, age INTEGER, sex INTEGER, weight REAL, height REAL, goal REAL, daily INTEGER, howActive INTEGER, end TEXT)`;
-	const intakeQuery = `CREATE TABLE IF NOT EXISTS intake (intakeId INTEGER PRIMARY KEY AUTOINCREMENT, foodId INTEGER, date TEXT)`;
-	const nutritionalQuery = `CREATE TABLE IF NOT EXISTS nutritional (foodId INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, calories INTEGER, protein REAL, carbs REAL, sugars REAL, fats REAL, saturates REAL, isVisible NUMBER)`;
-	const workoutsQuery = `CREATE TABLE IF NOT EXISTS workouts (workoutId INTEGER PRIMARY KEY AUTOINCREMENT, description TEXT, caloriesBurned INTEGER, date TEXT, duration INTEGER)`;
+	const userDataQuery = "CREATE TABLE IF NOT EXISTS userData (name TEXT PRIMARY KEY, age INTEGER, sex INTEGER, weight REAL, height REAL, goal REAL, daily INTEGER, howActive INTEGER, end TEXT)";
+	const intakeQuery = "CREATE TABLE IF NOT EXISTS intake (intakeId INTEGER PRIMARY KEY AUTOINCREMENT, foodId INTEGER, date TEXT)";
+	const nutritionalQuery = "CREATE TABLE IF NOT EXISTS nutritional (foodId INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, calories INTEGER, protein REAL, carbs REAL, sugars REAL, fats REAL, saturates REAL, isVisible NUMBER)";
+	const workoutsQuery = "CREATE TABLE IF NOT EXISTS workouts (workoutId INTEGER PRIMARY KEY AUTOINCREMENT, description TEXT, caloriesBurned INTEGER, date TEXT, duration INTEGER)";
 
 	try {
 		await db.executeSql(userDataQuery, []);
@@ -36,7 +37,7 @@ export const dev_getTableNames = async (db: SQLiteDatabase): Promise<string[]> =
 	try {
 		const tableNames: string[] = [];
 		const results = await db.executeSql(
-			`SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'`,
+			"SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'",
 			[],
 		);
 		results?.forEach(result => {
@@ -51,7 +52,7 @@ export const dev_getTableNames = async (db: SQLiteDatabase): Promise<string[]> =
 	}
 };
 
-export const dev_removeTable = async (db: SQLiteDatabase, tableName: String) => {
+export const dev_removeTable = async (db: SQLiteDatabase, tableName: string) => {
 	const query = `DROP TABLE IF EXISTS ${tableName}`;
 	try {
 		await db.executeSql(query, []);
@@ -62,14 +63,14 @@ export const dev_removeTable = async (db: SQLiteDatabase, tableName: String) => 
 };
 
 export const setUserData = async (db: SQLiteDatabase, user: User) => {
-	const checkQuery = `SELECT * FROM userData`;
+	const checkQuery = "SELECT * FROM userData";
 	try {
 		const results = await db.executeSql(checkQuery, []);
 		if (results[0].rows.length > 0) {
 			throw Error("User data already set");
 		} else {
 			const s: number = user.sex ? 1 : 0 | 2;
-			const query = `INSERT INTO userData (name, age, sex, weight, height, goal, daily, howActive, end) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+			const query = "INSERT INTO userData (name, age, sex, weight, height, goal, daily, howActive, end) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 			const vals = [
 				user.name,
 				user.age,
@@ -95,7 +96,7 @@ export const setUserData = async (db: SQLiteDatabase, user: User) => {
 };
 
 export const addFood = async (db: SQLiteDatabase, food: Food) => {
-	const query = `INSERT INTO nutritional (name, calories, protein, carbs, sugars, fats, saturates, isVisible) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
+	const query = "INSERT INTO nutritional (name, calories, protein, carbs, sugars, fats, saturates, isVisible) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 	const vals = [
 		food.name,
 		food.calories,
@@ -115,7 +116,7 @@ export const addFood = async (db: SQLiteDatabase, food: Food) => {
 };
 
 export const addWorkout = async (db: SQLiteDatabase, workout: Workout) => {
-	const query = `INSERT INTO workouts (description, caloriesBurned, date, length)`;
+	const query = "INSERT INTO workouts (description, caloriesBurned, date, length)";
 	const vals = [
 		workout.description,
 		workout.caloriesBurned,
@@ -131,7 +132,7 @@ export const addWorkout = async (db: SQLiteDatabase, workout: Workout) => {
 };
 
 export const addIntake = async (db: SQLiteDatabase, intake: Intake) => {
-	const query = `INSERT INTO intake (foodId, date) VALUES (?, ?)`;
+	const query = "INSERT INTO intake (foodId, date) VALUES (?, ?)";
 	const vals = [intake.foodId, intake.date.day + "-" + intake.date.month + "-" + intake.date.year];
 	try {
 		await db.executeSql(query, vals);
@@ -142,7 +143,7 @@ export const addIntake = async (db: SQLiteDatabase, intake: Intake) => {
 };
 
 export const selectUserData = async (db: SQLiteDatabase): Promise<User> => {
-	const query = `SELECT * FROM userData`;
+	const query = "SELECT * FROM userData";
 	try {
 		const results = await db.executeSql(query, []);
 		return results[0].rows.item(0);
@@ -153,7 +154,7 @@ export const selectUserData = async (db: SQLiteDatabase): Promise<User> => {
 };
 
 export const selectFoodById = async (db: SQLiteDatabase, foodId: number): Promise<Food> => {
-	const query = `SELECT * FROM nutritional WHERE foodId = ?`;
+	const query = "SELECT * FROM nutritional WHERE foodId = ?";
 	const vals = [foodId];
 	try {
 		const results = await db.executeSql(query, vals);
@@ -165,7 +166,7 @@ export const selectFoodById = async (db: SQLiteDatabase, foodId: number): Promis
 };
 
 export const selectVisibleFoods = async (db: SQLiteDatabase): Promise<Food[]> => {
-	const query = `SELECT * FROM nutritional WHERE isVisible = 1`;
+	const query = "SELECT * FROM nutritional WHERE isVisible = 1";
 	try {
 		const results = await db.executeSql(query, []);
 		const foods: Food[] = [];
@@ -184,7 +185,7 @@ export const selectIntakeByDate = async (
 	date: BasicDate,
 ): Promise<Intake[]> => {
 	if (valDate(date)) {
-		const query = `SELECT * FROM intake WHERE date = ?`;
+		const query = "SELECT * FROM intake WHERE date = ?";
 		const vals = [date.day + "-" + date.month + "-" + date.year];
 		try {
 			const results = await db.executeSql(query, vals);
@@ -207,7 +208,7 @@ export const selectWorkoutsByDate = async (
 	date: BasicDate,
 ): Promise<Workout[]> => {
 	if (valDate(date)) {
-		const query = `SELECT * FROM workouts WHERE date = ?`;
+		const query = "SELECT * FROM workouts WHERE date = ?";
 		const vals = [date.day + "-" + date.month + "-" + date.year];
 		try {
 			const results = await db.executeSql(query, vals);
@@ -226,7 +227,7 @@ export const selectWorkoutsByDate = async (
 };
 
 export const searchFoods = async (db: SQLiteDatabase, search: string): Promise<Food[]> => {
-	const query = `SELECT * FROM nutritional WHERE name LIKE ?`;
+	const query = "SELECT * FROM nutritional WHERE name LIKE ?";
 	const vals = ["%" + search + "%"];
 	try {
 		const results = await db.executeSql(query, vals);

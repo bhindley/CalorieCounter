@@ -19,14 +19,14 @@ declare interface Food {
 declare interface Intake {
     id?: number; //optional
     foodId: number; //id of food
-    date: date; //date of intake
+    date: BasicDate; //date of intake
 }
 
 declare interface Workout {
     id?: number; //optional
     description: string; //description of workout
     caloriesBurned: number; //in kcal
-    date: date; //date of workout
+    date: BasicDate; //date of workout
     length: number; //to be measured in seconds
 }
 
@@ -39,5 +39,5 @@ declare interface User {
     goal: number; // end goal weight in kg
     daily: number; //daily calorie intake in kcal
     howActive: number; //activity level 0-9
-    end: date; //end date of diet
+    end: BasicDate; //end date of diet
 }
